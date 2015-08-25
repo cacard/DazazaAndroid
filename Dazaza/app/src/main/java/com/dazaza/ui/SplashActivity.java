@@ -15,6 +15,6 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.startActivity(new Intent(this, StaggeredGridActivity.class));
+        this.startActivity(new Intent(this, MainActivity.class));
     }
 }
