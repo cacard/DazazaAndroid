@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.0"
 
     defaultConfig {
-        applicationId "diglog.com.dazaza"
+        applicationId "com.dazaza"
         minSdkVersion 10
         targetSdkVersion 23
         versionCode 1
