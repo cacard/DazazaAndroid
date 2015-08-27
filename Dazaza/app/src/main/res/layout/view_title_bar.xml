@@ -12,17 +12,19 @@
         android:layout_centerVertical="true"
         android:gravity="center"
         android:text="標題"
+        android:textColor="@color/title_bar_title_color"
         android:textSize="@dimen/titlebar_title_size" />
 
     <TextView
         android:id="@+id/tvClose"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/titlebar_close_margin_right"
         android:gravity="center"
-        android:text="@string/close" />
+        android:text="@string/close"
+        android:textColor="@color/title_bar_close_color"
+        android:visibility="gone" />
 
 </RelativeLayout>

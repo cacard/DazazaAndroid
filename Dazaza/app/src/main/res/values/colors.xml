@@ -5,5 +5,9 @@
     <color name="loading_color_1">#FFFFFF00</color>
     <color name="loading_color_2">#FFFF00FF</color>
     <color name="loading_color_3">#FF00FFFF</color>
+
+    <!-- title bar -->
     <color name="title_bar_bg">#FF555555</color>
+    <color name="title_bar_title_color">#FFFFFFFF</color>
+    <color name="title_bar_close_color">#FFFFFFFF</color>
 </resources>
