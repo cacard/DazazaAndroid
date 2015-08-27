@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="body_color">#FFEEEEEE</color>
+    <color name="menu_top_bg">#FFEEEEEE</color>
     <color name="loading_color_1">#FFFFFF00</color>
     <color name="loading_color_2">#FFFF00FF</color>
     <color name="loading_color_3">#FF00FFFF</color>
+
 </resources>

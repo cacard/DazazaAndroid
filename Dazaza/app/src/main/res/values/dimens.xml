@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="grid_item_margin">8dp</dimen>
+    <dimen name="grid_item_img_height">100dp</dimen>
+    <dimen name="grid_item_title_padding_bottom">2dp</dimen>
+    <dimen name="grid_item_title_size">14sp</dimen>
+    <dimen name="grid_item_note_size">12sp</dimen>
+    <dimen name="grid_item_note_margin_top">2dp</dimen>
+    <dimen name="menu_text_size">16sp</dimen>
+    <dimen name="setting_4_top_size">20dp</dimen>
+    <dimen name="setting_4_top_margin">15dp</dimen>
 </resources>

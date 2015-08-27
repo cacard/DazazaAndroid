@@ -44,7 +44,10 @@ public class StoryActivity extends BaseActivity {
     }
 
     private void getIntentData() {
-        if (this.getIntent() != null && this.getIntent().hasExtra(Constants.KEY_MODEL_STORY) ) {
+        if (this.getIntent() == null) {
+            return;
+        }
+        if (this.getIntent().hasExtra(Constants.KEY_MODEL_STORY) ) {
             modelStory = this.getIntent().getParcelableExtra(Constants.KEY_MODEL_STORY);
         }
     }

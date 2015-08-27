@@ -5,4 +5,5 @@ package com.dazaza.config;
  */
 public class Constants {
     public static final String KEY_MODEL_STORY = "KEY_MODEL_STORY";
+    public static final String KEY_STORY_ID = "KEY_STORY_ID";
 }

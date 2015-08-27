@@ -1,6 +1,7 @@
 package com.dazaza.ui.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.dazaza.R;
 import com.dazaza.model.ModelStory;
+import com.dazaza.utils.StoryUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -61,6 +63,7 @@ public class MainAdapter extends BaseAdapter {
                 holder = new ViewHolder();
                 holder.img = (SimpleDraweeView) convertView.findViewById(R.id.img);
                 holder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
+                holder.tvNote = (TextView) convertView.findViewById(R.id.tvNote);
                 convertView.setTag(holder);
             }
         } else {
@@ -69,6 +72,17 @@ public class MainAdapter extends BaseAdapter {
 
         if (holder != null) {
             final ModelStory modelStory = data.get(position);
+            if (modelStory != null) {
+                if (modelStory.getListThumbUrl() != null && modelStory.getListThumbUrl().length() > 0) {
+                    holder.img.setImageURI(Uri.parse(modelStory.getListThumbUrl()));
+                }
+                if (modelStory.getTitle() != null) {
+                    holder.tvTitle.setText(modelStory.getTitle());
+                }
+                if (modelStory.getNote() != null) {
+                    holder.tvNote.setText(StoryUtil.getSimpleNote(modelStory.getNote()));
+                }
+            }
         }
 
         return convertView;
@@ -77,5 +91,6 @@ public class MainAdapter extends BaseAdapter {
     private static class ViewHolder {
         SimpleDraweeView img;
         TextView tvTitle;
+        TextView tvNote;
     }
 }

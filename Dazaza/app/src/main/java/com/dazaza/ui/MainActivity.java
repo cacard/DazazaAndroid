@@ -1,5 +1,6 @@
 package com.dazaza.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,8 +10,15 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 
 import com.dazaza.R;
+import com.dazaza.api.ApiStoryFake;
+import com.dazaza.config.Constants;
+import com.dazaza.model.ModelStory;
 import com.dazaza.ui.adapter.MainAdapter;
+import com.dazaza.ui.view.MenuView;
+import com.dazaza.ui.web.StoryActivity;
 import com.etsy.android.grid.StaggeredGridView;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,15 +44,20 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        log("->onCreate()");
         this.setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initView();
         initListener();
         initAdapter();
+        startLoadingData();
     }
 
     private void initView() {
-
+        final MenuView menuView = new MenuView(this);
+        if (gridView != null) {
+            gridView.addHeaderView(menuView);
+        }
     }
 
     private void initAdapter() {
@@ -65,6 +78,43 @@ public class MainActivity extends BaseActivity implements
     }
 
     /**
+     * 从网络开始加载数据
+     */
+    private void startLoadingData() {
+        showLoading();
+        final List<ModelStory> list = ApiStoryFake.getStoryList("", 0);
+
+        if (list != null && list.size() > 0) {
+            adapter.setData(list);
+            adapter.notifyDataSetChanged();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    stopLoading();
+                }
+            }, 3000);
+        }
+    }
+
+    private void showLoading() {
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                if (swipeRefreshLayout != null) {
+                    swipeRefreshLayout.setRefreshing(true);
+                }
+            }
+        });
+    }
+
+    private void stopLoading() {
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+    /**
      * 下拉刷新触发
      */
     @Override
@@ -75,9 +125,7 @@ public class MainActivity extends BaseActivity implements
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (swipeRefreshLayout != null) {
-                    swipeRefreshLayout.setRefreshing(false);
-                }
+                stopLoading();
             }
         }, 5000);
     }
@@ -92,7 +140,14 @@ public class MainActivity extends BaseActivity implements
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        if (adapter != null) {
+            final ModelStory story = (ModelStory) adapter.getItem(position);
+            if (story != null) {
+                Intent intent = new Intent(MainActivity.this, StoryActivity.class);
+                intent.putExtra(Constants.KEY_STORY_ID, story.getId());
+                MainActivity.this.startActivity(intent);
+            }
+        }
     }
 
     /**

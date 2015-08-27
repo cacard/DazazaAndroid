@@ -31,6 +31,7 @@ dependencies {
     compile 'cn.trinea.android.common:trinea-android-common:4.2.15'// see:https://github.com/Trinea/android-common
     compile 'com.jakewharton:butterknife:7.0.1' // dp,see:http://jakewharton.github.io/butterknife/
     compile 'com.etsy.android.grid:library:1.0.5' // 瀑布流 see:https://github.com/etsy/AndroidStaggeredGrid
+
 }
 
 apply plugin: 'com.neenbedankt.android-apt'
