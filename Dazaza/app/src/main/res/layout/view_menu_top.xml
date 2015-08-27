@@ -2,14 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:background="@color/menu_top_bg"
-    android:layout_height="100dp">
+    android:layout_height="@dimen/menu_top_height">
 
     <ImageView
         android:id="@+id/imgSetting"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:src="@drawable/setting4top"
-        android:layout_marginLeft="@dimen/setting_4_top_margin"
+        android:layout_marginRight="@dimen/setting_4_top_margin"
         android:layout_marginTop="@dimen/setting_4_top_margin"
         android:layout_width="@dimen/setting_4_top_size"
         android:layout_height="@dimen/setting_4_top_size" />

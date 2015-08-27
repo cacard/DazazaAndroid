@@ -36,6 +36,7 @@
         <activity android:name=".ui.MainActivity" />
         <activity android:name=".ui.web.StoryActivity" />
         <activity android:name=".ui.SettingActivity" />
+        <activity android:name=".ui.SettingAboutActivity" />
 
         <!-- for demos -->
         <activity android:name=".libs.demo.CircleImageViewActivity" />

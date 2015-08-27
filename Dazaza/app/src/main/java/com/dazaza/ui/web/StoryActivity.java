@@ -3,12 +3,15 @@ package com.dazaza.ui.web;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebView;
+import android.widget.ImageView;
 
 import com.dazaza.R;
 import com.dazaza.config.Constants;
 import com.dazaza.model.ModelStory;
 import com.dazaza.ui.BaseActivity;
+import com.dazaza.ui.view.MenuBottomView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,6 +25,9 @@ public class StoryActivity extends BaseActivity {
 
     @Bind(R.id.webView)
     WebView webView;
+    @Bind(R.id.menuBottom)
+    MenuBottomView menuBottomView;
+    private ImageView imgBack;
 
     private ModelStory modelStory;
 
@@ -30,8 +36,17 @@ public class StoryActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_story);
         ButterKnife.bind(this);
+        initView();
         initWebView();
+        initListener();
         getIntentData();
+        startLoadingUrl();
+    }
+
+    private void initView() {
+        if (menuBottomView != null) {
+            imgBack = menuBottomView.getBackButton();
+        }
     }
 
     private void initWebView() {
@@ -49,6 +64,29 @@ public class StoryActivity extends BaseActivity {
         }
         if (this.getIntent().hasExtra(Constants.KEY_MODEL_STORY) ) {
             modelStory = this.getIntent().getParcelableExtra(Constants.KEY_MODEL_STORY);
+        }
+    }
+
+    private void initListener() {
+        if (imgBack != null) {
+            imgBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    quite();
+                }
+            });
+        }
+    }
+
+    /**
+     * 开始加载拿到的url
+     */
+    private void startLoadingUrl() {
+        if (webView != null && modelStory != null) {
+            final String url = modelStory.getWebUrl();
+            if (url != null && url.length() > 0) {
+                webView.loadUrl(url);
+            }
         }
     }
 

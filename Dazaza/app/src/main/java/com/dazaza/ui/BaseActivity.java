@@ -12,6 +12,10 @@ public class BaseActivity extends Activity {
         super.onCreate(savedInstanceState);
     }
 
+    protected void quite() {
+        finish();
+    }
+
     @Override
     protected void onStart() {
         super.onStart();

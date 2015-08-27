@@ -37,7 +37,7 @@ public class ApiStoryFake {
     private static ModelStory generateModelStory() {
         ModelStory model = new ModelStory();
         model.setId("100000");
-        model.setTitle("标题");
+        model.setTitle("标题，过长的标题会出现什么状况呢？测试一下。测试。测试。测试。测试");
         model.setCategory("design");
         model.setCategoryName("设计");
         model.setImageName("");

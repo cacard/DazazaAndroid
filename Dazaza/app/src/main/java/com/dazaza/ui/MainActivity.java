@@ -14,7 +14,7 @@ import com.dazaza.api.ApiStoryFake;
 import com.dazaza.config.Constants;
 import com.dazaza.model.ModelStory;
 import com.dazaza.ui.adapter.MainAdapter;
-import com.dazaza.ui.view.MenuView;
+import com.dazaza.ui.view.MenuTopView;
 import com.dazaza.ui.web.StoryActivity;
 import com.etsy.android.grid.StaggeredGridView;
 
@@ -54,9 +54,9 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void initView() {
-        final MenuView menuView = new MenuView(this);
+        final MenuTopView menuTopView = new MenuTopView(this);
         if (gridView != null) {
-            gridView.addHeaderView(menuView);
+            gridView.addHeaderView(menuTopView);
         }
     }
 
@@ -141,7 +141,12 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (adapter != null) {
-            final ModelStory story = (ModelStory) adapter.getItem(position);
+            final int headerCount = gridView.getHeaderViewsCount();
+            if (position <= headerCount -1) {
+                return;
+            }
+            final int p = position - headerCount;
+            final ModelStory story = (ModelStory) adapter.getItem(p);
             if (story != null) {
                 Intent intent = new Intent(MainActivity.this, StoryActivity.class);
                 intent.putExtra(Constants.KEY_STORY_ID, story.getId());

@@ -63,7 +63,6 @@ public class MainAdapter extends BaseAdapter {
                 holder = new ViewHolder();
                 holder.img = (SimpleDraweeView) convertView.findViewById(R.id.img);
                 holder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
-                holder.tvNote = (TextView) convertView.findViewById(R.id.tvNote);
                 convertView.setTag(holder);
             }
         } else {
@@ -78,9 +77,6 @@ public class MainAdapter extends BaseAdapter {
                 }
                 if (modelStory.getTitle() != null) {
                     holder.tvTitle.setText(modelStory.getTitle());
-                }
-                if (modelStory.getNote() != null) {
-                    holder.tvNote.setText(StoryUtil.getSimpleNote(modelStory.getNote()));
                 }
             }
         }

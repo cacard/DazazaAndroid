@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:gravity="center_vertical"
+    android:paddingLeft="@dimen/menu_bottom_padding_left"
+    android:paddingRight="@dimen/menu_bottom_padding_left"
+    android:layout_height="@dimen/menu_bottom_height">
+
+<ImageView
+    android:id="@+id/imgBack"
+    android:src="@drawable/back_arrow"
+    android:layout_width="@dimen/back_arrow_size"
+    android:layout_height="@dimen/back_arrow_size" />
+
+</RelativeLayout>
