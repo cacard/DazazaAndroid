@@ -2,6 +2,7 @@
     <string name="app_name">Dazaza</string>
     <string name="close">关闭</string>
     <string name="back_again_tips">再按一次退出</string>
+    <string name="network_invaliable">网络不可用</string>
 
     <!-- settings -->
     <string name="settings_about">关于</string>

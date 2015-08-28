@@ -17,6 +17,7 @@ import com.dazaza.api.ApiStory;
 import com.dazaza.api.ApiStoryFake;
 import com.dazaza.config.Constants;
 import com.dazaza.model.ModelStory;
+import com.dazaza.system.MyApplication;
 import com.dazaza.system.NetworkStatReceiver;
 import com.dazaza.ui.adapter.MainAdapter;
 import com.dazaza.ui.view.MenuTopView;
@@ -25,6 +26,7 @@ import com.dazaza.utils.StoryListUtil;
 import com.etsy.android.grid.StaggeredGridView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.okhttp.Call;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -67,7 +69,7 @@ public class MainActivity extends BaseActivity implements
 
     private NetworkStatReceiver networkStatReceiver;
     OkHttpClient client = new OkHttpClient();
-    private Request request;
+    private Call call;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +82,7 @@ public class MainActivity extends BaseActivity implements
         initAdapter();
         regReceiver();
         startLoadingData(1);
+        Toast.makeText(MyApplication.getInstance(), "test", Toast.LENGTH_SHORT);
     }
 
     private void initView() {
@@ -130,9 +133,13 @@ public class MainActivity extends BaseActivity implements
     public void networkStateChanged(boolean isAvialble, int type) {
         log("->networkStateChanged(),isAvialble:" + isAvialble + "/type:" + type);
         if (!isAvialble) {
-            if (request != null) {
-                // TODO 取消请求和Loading
+            if (call != null && call.isCanceled() == false) {
+                call.cancel();
+                stopLoading();
+                Toast.makeText(MainActivity.this,getResources().getString(R.string.network_invaliable),Toast.LENGTH_SHORT);
             }
+        } else {
+
         }
     }
 
@@ -171,13 +178,17 @@ public class MainActivity extends BaseActivity implements
      * 从网络开始加载数据
      */
     private void startLoadingData(int pageIndex) {
+        if (NetworkStatReceiver.isNetworkAvailable() == false) {
+            return;
+        }
+
         isLoadingData = true;
         showLoading();
 
-        request = ApiStory.getRquest4StoryList(pageIndex);
-
+        Request request = ApiStory.getRquest4StoryList(pageIndex);
         if (request != null) {
-            client.newCall(request).enqueue(this);
+            call = client.newCall(request);
+            call.enqueue(this);
         }
     }
 
