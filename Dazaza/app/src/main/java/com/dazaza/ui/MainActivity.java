@@ -1,6 +1,7 @@
 package com.dazaza.ui;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,6 +17,7 @@ import com.dazaza.api.ApiStory;
 import com.dazaza.api.ApiStoryFake;
 import com.dazaza.config.Constants;
 import com.dazaza.model.ModelStory;
+import com.dazaza.system.NetworkStatReceiver;
 import com.dazaza.ui.adapter.MainAdapter;
 import com.dazaza.ui.view.MenuTopView;
 import com.dazaza.ui.web.StoryActivity;
@@ -42,7 +44,8 @@ public class MainActivity extends BaseActivity implements
         SwipeRefreshLayout.OnRefreshListener,
         AdapterView.OnItemClickListener,
         AbsListView.OnScrollListener,
-        com.squareup.okhttp.Callback {
+        com.squareup.okhttp.Callback,
+        NetworkStatReceiver.WifiStatChangeCallback {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -62,6 +65,10 @@ public class MainActivity extends BaseActivity implements
     private int backCount = 0;
     private boolean backTwice = false;
 
+    private NetworkStatReceiver networkStatReceiver;
+    OkHttpClient client = new OkHttpClient();
+    private Request request;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +78,7 @@ public class MainActivity extends BaseActivity implements
         initView();
         initListener();
         initAdapter();
+        regReceiver();
         startLoadingData(1);
     }
 
@@ -96,6 +104,35 @@ public class MainActivity extends BaseActivity implements
         if (gridView != null) {
             gridView.setOnItemClickListener(this);
             gridView.setOnScrollListener(this);
+        }
+    }
+
+    private void regReceiver() {
+        if (networkStatReceiver == null) {
+            networkStatReceiver = new NetworkStatReceiver(this);
+        }
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(NetworkStatReceiver.ACTION);
+        this.registerReceiver(networkStatReceiver, filter);
+    }
+
+    private void unregReceiver() {
+        if (networkStatReceiver != null) {
+            try {
+                this.unregisterReceiver(networkStatReceiver);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void networkStateChanged(boolean isAvialble, int type) {
+        log("->networkStateChanged(),isAvialble:" + isAvialble + "/type:" + type);
+        if (!isAvialble) {
+            if (request != null) {
+                // TODO 取消请求和Loading
+            }
         }
     }
 
@@ -136,8 +173,8 @@ public class MainActivity extends BaseActivity implements
     private void startLoadingData(int pageIndex) {
         isLoadingData = true;
         showLoading();
-        OkHttpClient client = new OkHttpClient();
-        Request request = ApiStory.getRquest4StoryList(pageIndex);
+
+        request = ApiStory.getRquest4StoryList(pageIndex);
 
         if (request != null) {
             client.newCall(request).enqueue(this);
@@ -233,11 +270,6 @@ public class MainActivity extends BaseActivity implements
 
     /**
      * 瀑布流中每个项目的点击事件
-     *
-     * @param parent
-     * @param view
-     * @param position
-     * @param id
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -258,9 +290,6 @@ public class MainActivity extends BaseActivity implements
 
     /**
      * 瀑布流滑动状态改变事件
-     *
-     * @param view
-     * @param scrollState
      */
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -269,11 +298,6 @@ public class MainActivity extends BaseActivity implements
 
     /**
      * 瀑布流滑动事件
-     *
-     * @param view
-     * @param firstVisibleItem
-     * @param visibleItemCount
-     * @param totalItemCount
      */
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
@@ -293,6 +317,7 @@ public class MainActivity extends BaseActivity implements
         if (handler != null) {
             handler.removeCallbacksAndMessages(null);
         }
+        unregReceiver();
     }
 
     @Override

@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.dazaza.R;
 import com.dazaza.model.ModelStory;
-import com.dazaza.utils.StoryUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
