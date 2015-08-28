@@ -3,6 +3,7 @@ package com.dazaza.ui.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import com.dazaza.R;
 public class TitleBarView extends RelativeLayout {
 
     private Context context;
+    private ImageView imgBack;
     private TextView tvTitle;
     private TextView tvClose;
 
@@ -37,6 +39,7 @@ public class TitleBarView extends RelativeLayout {
         LayoutInflater.from(context).inflate(R.layout.view_title_bar, this, true);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvClose = (TextView) findViewById(R.id.tvClose);
+        imgBack = (ImageView) findViewById(R.id.imgBack);
     }
 
     public TextView getTitle() {
@@ -45,5 +48,9 @@ public class TitleBarView extends RelativeLayout {
 
     public TextView getClose() {
         return tvClose;
+    }
+
+    public ImageView getImgBack() {
+        return imgBack;
     }
 }

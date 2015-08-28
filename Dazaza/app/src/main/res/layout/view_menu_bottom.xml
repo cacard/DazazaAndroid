@@ -2,14 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:gravity="center_vertical"
+    android:background="@color/web_bottom_bar_bg_color"
     android:paddingLeft="@dimen/menu_bottom_padding_left"
     android:paddingRight="@dimen/menu_bottom_padding_left"
     android:layout_height="@dimen/menu_bottom_height">
 
 <ImageView
     android:id="@+id/imgBack"
-    android:src="@drawable/back_arrow"
+    android:src="@drawable/back_arrow_for_title_bar"
     android:layout_width="@dimen/back_arrow_size"
+    android:layout_centerVertical="true"
     android:layout_height="@dimen/back_arrow_size" />
+
+    <ImageView
+        android:id="@+id/imgShare"
+        android:src="@drawable/share_1"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_width="@dimen/back_arrow_size"
+        android:layout_height="@dimen/back_arrow_size" />
 
 </RelativeLayout>

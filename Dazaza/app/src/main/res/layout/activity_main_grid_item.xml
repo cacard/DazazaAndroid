@@ -8,15 +8,17 @@
         android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="@dimen/grid_item_img_height"
+        android:background="@color/grid_border_color"
+        android:padding="@dimen/grid_item_border_width"
         fresco:placeholderImage="@drawable/img_grid_item_default" />
 
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/img"
         android:maxLines="2"
         android:minLines="2"
-        android:layout_below="@id/img"
         android:paddingBottom="@dimen/grid_item_title_padding_bottom"
         android:textSize="@dimen/grid_item_title_size" />
 </RelativeLayout>

@@ -3,21 +3,33 @@ package com.dazaza.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.dazaza.R;
+import com.dazaza.api.ApiStory;
 import com.dazaza.api.ApiStoryFake;
 import com.dazaza.config.Constants;
 import com.dazaza.model.ModelStory;
 import com.dazaza.ui.adapter.MainAdapter;
 import com.dazaza.ui.view.MenuTopView;
 import com.dazaza.ui.web.StoryActivity;
+import com.dazaza.utils.StoryListUtil;
 import com.etsy.android.grid.StaggeredGridView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -29,7 +41,8 @@ import butterknife.ButterKnife;
 public class MainActivity extends BaseActivity implements
         SwipeRefreshLayout.OnRefreshListener,
         AdapterView.OnItemClickListener,
-        AbsListView.OnScrollListener {
+        AbsListView.OnScrollListener,
+        com.squareup.okhttp.Callback {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -38,8 +51,16 @@ public class MainActivity extends BaseActivity implements
     @Bind(R.id.gridView)
     StaggeredGridView gridView;
 
-    private boolean hasLoadMore = false;
+    private boolean isLoadingData = true;
     private MainAdapter adapter;
+    private List<ModelStory> data;
+    private byte[] lock4Data = new byte[0];
+    private int nextPageIndex = 1;
+
+    private MyHandler handler = new MyHandler(this);
+    private static final int MSG_UPDATE_ADAPTER = 1;
+    private int backCount = 0;
+    private boolean backTwice = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +71,7 @@ public class MainActivity extends BaseActivity implements
         initView();
         initListener();
         initAdapter();
-        startLoadingData();
+        startLoadingData(1);
     }
 
     private void initView() {
@@ -65,6 +86,7 @@ public class MainActivity extends BaseActivity implements
         if (gridView != null) {
             gridView.setAdapter(adapter);
         }
+        adapter.notifyDataSetChanged();
     }
 
     private void initListener() {
@@ -77,10 +99,92 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
+    private static class MyHandler extends Handler {
+
+        private WeakReference<MainActivity> ref;
+
+        public MyHandler(MainActivity activity) {
+            if (activity != null) {
+                ref = new WeakReference<MainActivity>(activity);
+            }
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            if (ref == null) {
+                return;
+            }
+
+            MainActivity activity = ref.get();
+            if (activity == null) {
+                return;
+            }
+
+            switch (msg.what) {
+                case MSG_UPDATE_ADAPTER:
+                    if (activity.adapter != null) {
+                        activity.adapter.notifyDataSetChanged();
+                    }
+                    break;
+            }
+        }
+    }
+
     /**
      * 从网络开始加载数据
      */
-    private void startLoadingData() {
+    private void startLoadingData(int pageIndex) {
+        isLoadingData = true;
+        showLoading();
+        OkHttpClient client = new OkHttpClient();
+        Request request = ApiStory.getRquest4StoryList(pageIndex);
+
+        if (request != null) {
+            client.newCall(request).enqueue(this);
+        }
+    }
+
+    @Override
+    public void onFailure(Request request, IOException e) {
+        showLoadingError();
+    }
+
+    @Override
+    public void onResponse(Response response) throws IOException {
+        stopLoading();
+        isLoadingData = false;
+
+        if (response == null) {
+            return;
+        }
+
+        if (!response.isSuccessful()) {
+            showLoadingError();
+        } else {
+            final String body = response.body().string();
+            if (body != null && body.length() > 0) {
+                final List<ModelStory> list = new Gson().fromJson(body, new TypeToken<ArrayList<ModelStory>>() {
+                }.getType());
+                synchronized (lock4Data) {
+                    if (nextPageIndex == 1) {// when 1st page, no need merge
+                        data = list;
+                    } else {
+                        data = StoryListUtil.merge(data, list);
+                    }
+                    adapter.setData(data);
+                    handler.sendEmptyMessage(MSG_UPDATE_ADAPTER);
+                }
+
+                nextPageIndex++;
+            }
+        }
+    }
+
+    private void showLoadingError() {
+
+    }
+
+    private void startLoadingDataFromFake() {
         showLoading();
         final List<ModelStory> list = ApiStoryFake.getStoryList("", 0);
 
@@ -109,9 +213,14 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void stopLoading() {
-        if (swipeRefreshLayout != null) {
-            swipeRefreshLayout.setRefreshing(false);
-        }
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                if (swipeRefreshLayout != null) {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            }
+        });
     }
 
     /**
@@ -119,15 +228,7 @@ public class MainActivity extends BaseActivity implements
      */
     @Override
     public void onRefresh() {
-        log("->onRefresh()");
-
-        // stop loading after some seconds
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                stopLoading();
-            }
-        }, 5000);
+        startLoadingData(1);
     }
 
     /**
@@ -142,7 +243,7 @@ public class MainActivity extends BaseActivity implements
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (adapter != null) {
             final int headerCount = gridView.getHeaderViewsCount();
-            if (position <= headerCount -1) {
+            if (position <= headerCount - 1) {
                 return;
             }
             final int p = position - headerCount;
@@ -176,17 +277,43 @@ public class MainActivity extends BaseActivity implements
      */
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        if (!hasLoadMore) {
+        log("1st:" + firstVisibleItem + "/visibleCount:" + visibleItemCount + "/total:" + totalItemCount);
+        if (!isLoadingData) {
             if (firstVisibleItem + visibleItemCount >= totalItemCount) {
                 log("->will loading more...");
-                hasLoadMore = true;
+                isLoadingData = true;
+                startLoadingData(nextPageIndex + 1);
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backTwice) {
+            quite();
+            return;
+        }
+
+        backTwice = true;
+        Toast.makeText(this, getResources().getString(R.string.back_again_tips), Toast.LENGTH_SHORT).show();
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                backTwice = false;
+            }
+        }, 2000);
     }
 
     private void log(String msg) {
         Log.i(TAG, msg);
     }
-
-
 }

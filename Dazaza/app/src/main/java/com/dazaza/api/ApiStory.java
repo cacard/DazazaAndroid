@@ -1,7 +1,7 @@
 package com.dazaza.api;
 
 import com.dazaza.model.ModelMenu;
-import com.dazaza.model.ModelStory;
+import com.squareup.okhttp.Request;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,17 +15,15 @@ public class ApiStory {
      * get hot story list
      *
      * @param category when 'null' or empty means all
-     * @param startId when <= 0 means top
+     * @param startId  when <= 0 means top
      * @return
      */
-    public static List<ModelStory> getStoryList(String category, int startId) {
-        if (category == null) {
-            category = "";
+    public static Request getRquest4StoryList(int pageIndex) {
+        if (pageIndex < 1) {
+            pageIndex = 1;
         }
 
-        List<ModelStory> list = new ArrayList<ModelStory>();
-
-        return list;
+        return new Request.Builder().tag(pageIndex).url(ApiSetting.HTTP_API_URL_BASE + "?page=" + pageIndex).build();
     }
 
     /**

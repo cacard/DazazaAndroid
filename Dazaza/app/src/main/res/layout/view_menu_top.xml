@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/menu_top_bg"
-    android:layout_height="@dimen/menu_top_height">
+    android:layout_height="@dimen/menu_top_height"
+    android:background="@color/menu_top_bg">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/imgLogo"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/menu_top_height"
+        android:layout_centerInParent="true"
+        fresco:placeholderImage="@drawable/img_grid_item_default" />
 
     <ImageView
         android:id="@+id/imgSetting"
+        android:layout_width="@dimen/setting_4_top_size"
+        android:layout_height="@dimen/setting_4_top_size"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/setting4top"
         android:layout_marginRight="@dimen/setting_4_top_margin"
         android:layout_marginTop="@dimen/setting_4_top_margin"
-        android:layout_width="@dimen/setting_4_top_size"
-        android:layout_height="@dimen/setting_4_top_size" />
+        android:src="@drawable/menu_1_gray" />
 
 </RelativeLayout>

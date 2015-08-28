@@ -4,6 +4,14 @@
     android:layout_height="@dimen/titlebar_height"
     android:background="@color/title_bar_bg">
 
+    <ImageView
+        android:id="@+id/imgBack"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/titlebar_close_margin_right"
+        android:src="@drawable/back_arrow_for_title_bar"
+        android:layout_width="@dimen/menu_top_back_arrow_size"
+        android:layout_height="@dimen/menu_top_back_arrow_size" />
+
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
@@ -11,7 +19,6 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:gravity="center"
-        android:text="標題"
         android:textColor="@color/title_bar_title_color"
         android:textSize="@dimen/titlebar_title_size" />
 
@@ -24,6 +31,7 @@
         android:layout_marginRight="@dimen/titlebar_close_margin_right"
         android:gravity="center"
         android:text="@string/close"
+        android:textSize="@dimen/titlebar_close_size"
         android:textColor="@color/title_bar_close_color"
         android:visibility="gone" />
 
