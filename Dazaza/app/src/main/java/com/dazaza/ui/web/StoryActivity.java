@@ -1,6 +1,5 @@
 package com.dazaza.ui.web;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -62,7 +61,7 @@ public class StoryActivity extends BaseActivity {
         if (this.getIntent() == null) {
             return;
         }
-        if (this.getIntent().hasExtra(Constants.KEY_MODEL_STORY) ) {
+        if (this.getIntent().hasExtra(Constants.KEY_MODEL_STORY)) {
             modelStory = this.getIntent().getParcelableExtra(Constants.KEY_MODEL_STORY);
         }
     }
@@ -83,7 +82,7 @@ public class StoryActivity extends BaseActivity {
      */
     private void startLoadingUrl() {
         if (webView != null && modelStory != null) {
-            final String url = modelStory.getWebUrl();
+            final String url = "http://www.diglog.com/story?ismobile=1&id=" + modelStory.getInfoId();
             if (url != null && url.length() > 0) {
                 webView.loadUrl(url);
             }

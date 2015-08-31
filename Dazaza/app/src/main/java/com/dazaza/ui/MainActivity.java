@@ -5,6 +5,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
@@ -133,10 +134,10 @@ public class MainActivity extends BaseActivity implements
     public void networkStateChanged(boolean isAvialble, int type) {
         log("->networkStateChanged(),isAvialble:" + isAvialble + "/type:" + type);
         if (!isAvialble) {
+            Toast.makeText(MainActivity.this, getResources().getString(R.string.network_invaliable), Toast.LENGTH_SHORT);
             if (call != null && call.isCanceled() == false) {
                 call.cancel();
                 stopLoading();
-                Toast.makeText(MainActivity.this,getResources().getString(R.string.network_invaliable),Toast.LENGTH_SHORT);
             }
         } else {
 
@@ -178,10 +179,6 @@ public class MainActivity extends BaseActivity implements
      * 从网络开始加载数据
      */
     private void startLoadingData(int pageIndex) {
-        if (NetworkStatReceiver.isNetworkAvailable() == false) {
-            return;
-        }
-
         isLoadingData = true;
         showLoading();
 
@@ -294,6 +291,7 @@ public class MainActivity extends BaseActivity implements
             if (story != null) {
                 Intent intent = new Intent(MainActivity.this, StoryActivity.class);
                 intent.putExtra(Constants.KEY_STORY_ID, story.getId());
+                intent.putExtra(Constants.KEY_MODEL_STORY, (Parcelable) story);
                 MainActivity.this.startActivity(intent);
             }
         }

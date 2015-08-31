@@ -1,5 +1,8 @@
 package com.dazaza.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -7,7 +10,7 @@ import java.util.Date;
  * Created by cunqingli on 2015/8/27.
  * for app
  */
-public class ModelStory4Web implements Serializable {
+public class ModelStory4Web implements Serializable, Parcelable {
     private static final long serialVersionUID = -6952822566967592566L;
     protected String id;
     protected String url;
@@ -150,4 +153,57 @@ public class ModelStory4Web implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.url);
+        dest.writeString(this.title);
+        dest.writeString(this.name);
+        dest.writeString(this.tags);
+        dest.writeLong(posttime != null ? posttime.getTime() : -1);
+        dest.writeString(this.note);
+        dest.writeString(this.imageName);
+        dest.writeInt(this.infoId);
+        dest.writeString(this.category);
+        dest.writeInt(this.isAnchordig);
+        dest.writeInt(this.isDelete);
+        dest.writeString(this.categoryClass);
+        dest.writeString(this.ip);
+        dest.writeString(this.via);
+    }
+
+    protected ModelStory4Web(Parcel in) {
+        this.id = in.readString();
+        this.url = in.readString();
+        this.title = in.readString();
+        this.name = in.readString();
+        this.tags = in.readString();
+        long tmpPosttime = in.readLong();
+        this.posttime = tmpPosttime == -1 ? null : new Date(tmpPosttime);
+        this.note = in.readString();
+        this.imageName = in.readString();
+        this.infoId = in.readInt();
+        this.category = in.readString();
+        this.isAnchordig = in.readInt();
+        this.isDelete = in.readInt();
+        this.categoryClass = in.readString();
+        this.ip = in.readString();
+        this.via = in.readString();
+    }
+
+    public static final Parcelable.Creator<ModelStory4Web> CREATOR = new Parcelable.Creator<ModelStory4Web>() {
+        public ModelStory4Web createFromParcel(Parcel source) {
+            return new ModelStory4Web(source);
+        }
+
+        public ModelStory4Web[] newArray(int size) {
+            return new ModelStory4Web[size];
+        }
+    };
 }

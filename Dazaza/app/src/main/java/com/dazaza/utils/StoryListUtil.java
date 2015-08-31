@@ -3,6 +3,7 @@ package com.dazaza.utils;
 import com.dazaza.model.ModelStory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,22 +32,25 @@ public class StoryListUtil {
 
         List<ModelStory> result = new ArrayList<ModelStory>();
 
-        HashMap<String, ModelStory> hashMap1 = new HashMap<String, ModelStory>();
+        HashMap<Integer, ModelStory> hashMap1 = new HashMap<Integer, ModelStory>();
         if (list1 != null) {
             for (ModelStory m : list1) {
-                hashMap1.put(m.getTitle(), m);
+                hashMap1.put(m.getInfoId(), m);
             }
         }
-        HashMap<String, ModelStory> hashMap2 = new HashMap<String, ModelStory>();
+        HashMap<Integer, ModelStory> hashMap2 = new HashMap<Integer, ModelStory>();
         if (list2 != null) {
             for (ModelStory m : list2) {
-                hashMap2.put(m.getTitle(), m);
+                hashMap2.put(m.getInfoId(), m);
             }
         }
         hashMap1.putAll(hashMap2);
         result.addAll(hashMap1.values());
 
         // TODO 按照infoid排序
+        if (result != null && result.size() > 0) {
+            Collections.sort(result);
+        }
 
         return result;
     }
