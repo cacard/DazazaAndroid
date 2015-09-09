@@ -83,7 +83,6 @@ public class MainActivity extends BaseActivity implements
         initAdapter();
         regReceiver();
         startLoadingData(1);
-        Toast.makeText(MyApplication.getInstance(), "test", Toast.LENGTH_SHORT);
     }
 
     private void initView() {
@@ -134,7 +133,7 @@ public class MainActivity extends BaseActivity implements
     public void networkStateChanged(boolean isAvialble, int type) {
         log("->networkStateChanged(),isAvialble:" + isAvialble + "/type:" + type);
         if (!isAvialble) {
-            Toast.makeText(MainActivity.this, getResources().getString(R.string.network_invaliable), Toast.LENGTH_SHORT);
+            Toast.makeText(MainActivity.this, getResources().getString(R.string.network_invaliable), Toast.LENGTH_SHORT).show();
             if (call != null && call.isCanceled() == false) {
                 call.cancel();
                 stopLoading();

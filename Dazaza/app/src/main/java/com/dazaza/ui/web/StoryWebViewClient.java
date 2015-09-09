@@ -1,14 +1,10 @@
 package com.dazaza.ui.web;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import com.dazaza.config.ConfigGlobal;
 
 import java.lang.ref.WeakReference;
 
@@ -39,6 +35,17 @@ public class StoryWebViewClient extends WebViewClient {
     @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
+
+        if (ref4Activity == null) {
+            return;
+        }
+
+        StoryActivity activity = ref4Activity.get();
+        if (activity == null) {
+            return;
+        }
+
+        activity.switch2Webview();
     }
 
     @Override

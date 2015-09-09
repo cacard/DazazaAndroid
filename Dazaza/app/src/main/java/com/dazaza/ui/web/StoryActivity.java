@@ -8,9 +8,11 @@ import android.widget.ImageView;
 
 import com.dazaza.R;
 import com.dazaza.config.Constants;
+import com.dazaza.html.HtmlBuilder;
 import com.dazaza.model.ModelStory;
 import com.dazaza.ui.BaseActivity;
 import com.dazaza.ui.view.MenuBottomView;
+import com.dazaza.ui.view.RotateLoading;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,9 +28,15 @@ public class StoryActivity extends BaseActivity {
     WebView webView;
     @Bind(R.id.menuBottom)
     MenuBottomView menuBottomView;
-    private ImageView imgBack;
+    @Bind(R.id.loading)
+    RotateLoading loading;
 
+    private ImageView imgBack;
     private ModelStory modelStory;
+
+    private static final int MODE_URL = 1; // 加载远程url
+    private static final int MODE_LOCAL = 2; // 加载本地合并成的HTML
+    private int mode = MODE_LOCAL; // 模式
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +47,13 @@ public class StoryActivity extends BaseActivity {
         initWebView();
         initListener();
         getIntentData();
-        startLoadingUrl();
+
+        if (mode == MODE_URL) {
+            startLoadingUrl();
+        }
+        if (mode == MODE_LOCAL) {
+            startLoadingLocal();
+        }
     }
 
     private void initView() {
@@ -84,8 +98,37 @@ public class StoryActivity extends BaseActivity {
         if (webView != null && modelStory != null) {
             final String url = "http://www.diglog.com/story?ismobile=1&id=" + modelStory.getInfoId();
             if (url != null && url.length() > 0) {
+                switch2Loading();
                 webView.loadUrl(url);
             }
+        }
+    }
+
+    private void startLoadingLocal() {
+        if (modelStory == null) {
+            // show empty
+        }
+
+        if (webView != null) {
+            webView.loadDataWithBaseURL("file:///android_asset/", HtmlBuilder.buildHtml(modelStory),"text/html", "UTF-8", null);
+        }
+    }
+
+    public void switch2Loading() {
+        if (webView != null) {
+            webView.setVisibility(View.GONE);
+        }
+        if (loading != null) {
+            loading.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void switch2Webview() {
+        if (webView != null) {
+            webView.setVisibility(View.VISIBLE);
+        }
+        if (loading != null) {
+            loading.setVisibility(View.GONE);
         }
     }
 
