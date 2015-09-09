@@ -26,12 +26,30 @@ public class HtmlBuilder {
         sb.append("<meta content=\"telephone=no\" name=\"format-detection\">");
         sb.append("<meta name=\"format-detection\" content=\"email=no\">");
         sb.append("<title>").append(model.getTitle()).append("</title>");
-        sb.append("<link href=\"./css/content.css\" type=\"text/css\" rel=\"stylesheet\">"); // using loadDataWithBaseUrl("file:///android_asset/"...)
+        sb.append("<link href=\"./css.css\" type=\"text/css\" rel=\"stylesheet\">"); // using loadDataWithBaseUrl("file:///android_asset/"...)
         sb.append("</head>");
 
         // -------------------
         // body
         sb.append("<body>");
+        sb.append("<div>");
+
+        // title
+        sb.append("<div class=\"title\">").append(model.getTitle()).append("</div>");
+
+        // image
+        sb.append("<div class=\"img_main_box\">")
+                .append("<img src=\"").append(model.getListThumbUrl()).append("\"></img>")
+                .append("</div>");
+
+        // note
+        sb.append("<div class=\"note\">").append(model.getNote()).append("</div>");
+
+        // more images
+
+        // relate
+
+        sb.append("</div>");
         sb.append("</body>");
         // body end
         // -------------------
