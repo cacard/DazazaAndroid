@@ -19,6 +19,10 @@
         android:layout_below="@id/img"
         android:maxLines="2"
         android:minLines="2"
+        android:textColor="@color/grid_item_title_color"
+        android:paddingTop="@dimen/grid_item_title_padding_top"
         android:paddingBottom="@dimen/grid_item_title_padding_bottom"
+        android:paddingLeft="@dimen/grid_item_title_padding_left_right"
+        android:paddingRight="@dimen/grid_item_title_padding_left_right"
         android:textSize="@dimen/grid_item_title_size" />
 </RelativeLayout>

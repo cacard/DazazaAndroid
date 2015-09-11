@@ -197,13 +197,4 @@ public class ModelStory4Web implements Serializable, Parcelable {
         this.via = in.readString();
     }
 
-    public static final Parcelable.Creator<ModelStory4Web> CREATOR = new Parcelable.Creator<ModelStory4Web>() {
-        public ModelStory4Web createFromParcel(Parcel source) {
-            return new ModelStory4Web(source);
-        }
-
-        public ModelStory4Web[] newArray(int size) {
-            return new ModelStory4Web[size];
-        }
-    };
 }

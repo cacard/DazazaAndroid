@@ -15,13 +15,35 @@ body {
 .img_main_box
 {
   text-align: center;
-  padding:8px;
+  margin-top: 20px;
+  margin-bottom: 15px;
 }
 
 .note
 {
+  font-size:18px;
+  line-height: 160%;
   margin-top:10px;
   margin-bottom: 10px;
   padding-left: 20px;
   padding-right: 20px;
+}
+
+.more_image
+{
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
+.more_image_item
+{
+  margin-top:20px;
+  margin-bottom:20px;
+}
+
+.more_image_item_note
+{
+  font-size:15px;
+  padding-top:8px;
+  padding-bottom:10px;
 }

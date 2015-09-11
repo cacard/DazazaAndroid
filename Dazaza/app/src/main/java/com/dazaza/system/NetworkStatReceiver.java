@@ -34,33 +34,37 @@ public class NetworkStatReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         log("->onReceive()");
 
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        checkNetworkState();
+
+        if (ref != null && ref.get() != null) {
+            ref.get().networkStateChanged(isNetworkAvailable, networkType);
+        }
+    }
+
+    public static void checkNetworkState() {
+        ConnectivityManager cm = (ConnectivityManager) MyApplication.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mobileNetInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         NetworkInfo wifiNetInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         NetworkInfo allNetInfo = cm.getActiveNetworkInfo();
 
         if (allNetInfo != null) {
-            if (allNetInfo.isAvailable() || allNetInfo.isConnected() || allNetInfo.isConnectedOrConnecting()) {
+            if (allNetInfo.isAvailable() && (allNetInfo.isConnected() || allNetInfo.isConnectedOrConnecting())) {
                 isNetworkAvailable = true;
             }
         }
 
         if (mobileNetInfo != null) {
-            if (mobileNetInfo.isAvailable() || mobileNetInfo.isConnected() || mobileNetInfo.isConnectedOrConnecting()) {
+            if (mobileNetInfo.isAvailable() && (mobileNetInfo.isConnected() || mobileNetInfo.isConnectedOrConnecting())) {
                 isNetworkAvailable = true;
                 networkType = NETWORK_TYPE_MOBILE;
             }
         }
 
         if (wifiNetInfo != null) {
-            if (wifiNetInfo.isAvailable() || wifiNetInfo.isConnected() || wifiNetInfo.isConnectedOrConnecting()) {
+            if (wifiNetInfo.isAvailable() && ( wifiNetInfo.isConnected() || wifiNetInfo.isConnectedOrConnecting())) {
                 isNetworkAvailable = true;
                 networkType = NETWORK_TYPE_WIFI;
             }
-        }
-
-        if (ref != null && ref.get() != null) {
-            ref.get().networkStateChanged(isNetworkAvailable, networkType);
         }
     }
 

@@ -1,6 +1,9 @@
 package com.dazaza.html;
 
+import com.dazaza.model.ModelMoreImage;
 import com.dazaza.model.ModelStory;
+
+import java.util.List;
 
 /**
  * Created by cunqingli on 2015/9/9.
@@ -43,9 +46,25 @@ public class HtmlBuilder {
                 .append("</div>");
 
         // note
-        sb.append("<div class=\"note\">").append(model.getNote()).append("</div>");
+        sb.append("<div class=\"note\">").append(formatNote(model.getNote())).append("</div>");
 
         // more images
+        final List<ModelMoreImage> moreImages = model.getMoreImages();
+        if (moreImages != null && moreImages.size() > 0 ) {
+            sb.append("<div class=\"more_image\">");
+            for (ModelMoreImage moreImage : moreImages) {
+                if (moreImage == null) {
+                    continue;
+                }
+                sb.append("<div class=\"more_image_item\">");
+                sb.append("<img src=\"").append(moreImage.getImageUrl()).append("\">");
+                if (moreImage.getImageNote() != null && moreImage.getImageNote().length() > 0) {
+                    sb.append("<div class=\"more_image_item_note\">").append(moreImage.getImageNote()).append("</div>");
+                }
+                sb.append("</div>");
+            }
+            sb.append("</div>");
+        }
 
         // relate
 
@@ -57,6 +76,14 @@ public class HtmlBuilder {
         sb.append("</html>");
 
         return sb.toString();
+    }
+
+    private static String formatNote(String note) {
+        if (note != null && note.length() > 0) {
+            note = note.replace("\n","</p><p>");
+        }
+
+        return "<p>"+note+"</p>";
     }
 
 }

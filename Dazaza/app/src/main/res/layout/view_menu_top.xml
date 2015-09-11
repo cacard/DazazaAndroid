@@ -5,12 +5,16 @@
     android:layout_height="@dimen/menu_top_height"
     android:background="@color/menu_top_bg">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/imgLogo"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/menu_top_height"
-        android:layout_centerInParent="true"
-        fresco:placeholderImage="@drawable/img_grid_item_default" />
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/img"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:src="@drawable/logo_splash"
+        app:border_color="#FFeeeeee"
+        app:border_width="2dp" />
 
     <ImageView
         android:id="@+id/imgSetting"

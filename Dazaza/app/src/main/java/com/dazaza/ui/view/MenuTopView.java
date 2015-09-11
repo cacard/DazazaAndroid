@@ -48,11 +48,11 @@ public class MenuTopView extends FrameLayout implements View.OnClickListener {
 
     private void findControls() {
         imgSetting = (ImageView) this.findViewById(R.id.imgSetting);
-        imgLogo = (SimpleDraweeView) this.findViewById(R.id.imgLogo);
-        if (imgLogo != null) {
-            imgLogo.setImageURI(Uri.parse(ConfigGlobal.DEFAULT_LOGO_URL));
-            imgLogo.setVisibility(GONE);
-        }
+//        imgLogo = (SimpleDraweeView) this.findViewById(R.id.imgLogo);
+//        if (imgLogo != null) {
+//            imgLogo.setImageURI(Uri.parse(ConfigGlobal.DEFAULT_LOGO_URL));
+//            imgLogo.setVisibility(GONE);
+//        }
     }
 
     private void initListeners() {

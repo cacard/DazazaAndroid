@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by cunqingli on 2015/8/25.
@@ -14,6 +16,7 @@ public class ModelStory extends ModelStory4Web implements Serializable, Comparab
     private String categoryName; // 分类的中文名字
     private String listThumbUrl; // 下发的缩略图url。通过下发的方式要不在App本地拼接Url更稳妥
     private String webUrl; // 下发的详情页对应的url。
+    private List<ModelMoreImage> moreImages; // 更多图片
 
     public ModelStory() {
 
@@ -43,6 +46,14 @@ public class ModelStory extends ModelStory4Web implements Serializable, Comparab
         this.webUrl = webUrl;
     }
 
+    public List<ModelMoreImage> getMoreImages() {
+        return moreImages;
+    }
+
+    public void setMoreImages(List<ModelMoreImage> moreImages) {
+        this.moreImages = moreImages;
+    }
+
     @Override
     public int compareTo(ModelStory another) {
         if (another != null) {
@@ -68,6 +79,7 @@ public class ModelStory extends ModelStory4Web implements Serializable, Comparab
         dest.writeString(this.categoryName);
         dest.writeString(this.listThumbUrl);
         dest.writeString(this.webUrl);
+        dest.writeList(this.moreImages);
     }
 
     protected ModelStory(Parcel in) {
@@ -75,9 +87,11 @@ public class ModelStory extends ModelStory4Web implements Serializable, Comparab
         this.categoryName = in.readString();
         this.listThumbUrl = in.readString();
         this.webUrl = in.readString();
+        this.moreImages = new ArrayList<ModelMoreImage>();
+        in.readList(this.moreImages, List.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<ModelStory> CREATOR = new Parcelable.Creator<ModelStory>() {
+    public static final Creator<ModelStory> CREATOR = new Creator<ModelStory>() {
         public ModelStory createFromParcel(Parcel source) {
             return new ModelStory(source);
         }

@@ -18,8 +18,10 @@ import com.dazaza.api.ApiStory;
 import com.dazaza.api.ApiStoryFake;
 import com.dazaza.config.Constants;
 import com.dazaza.model.ModelStory;
-import com.dazaza.system.MyApplication;
+import com.dazaza.runnable.RunnableLoadFromCache;
+import com.dazaza.runnable.RunnableSaveCache;
 import com.dazaza.system.NetworkStatReceiver;
+import com.dazaza.system.TaskManager;
 import com.dazaza.ui.adapter.MainAdapter;
 import com.dazaza.ui.view.MenuTopView;
 import com.dazaza.ui.web.StoryActivity;
@@ -82,7 +84,12 @@ public class MainActivity extends BaseActivity implements
         initListener();
         initAdapter();
         regReceiver();
-        startLoadingData(1);
+
+        if (NetworkStatReceiver.isNetworkAvailable()) {
+            startLoadingDataFromHttp(1);
+        } else {
+            startLoadingDataFromCache();
+        }
     }
 
     private void initView() {
@@ -133,7 +140,7 @@ public class MainActivity extends BaseActivity implements
     public void networkStateChanged(boolean isAvialble, int type) {
         log("->networkStateChanged(),isAvialble:" + isAvialble + "/type:" + type);
         if (!isAvialble) {
-            Toast.makeText(MainActivity.this, getResources().getString(R.string.network_invaliable), Toast.LENGTH_SHORT).show();
+            showMsgNetworkInvaiable();
             if (call != null && call.isCanceled() == false) {
                 call.cancel();
                 stopLoading();
@@ -141,6 +148,10 @@ public class MainActivity extends BaseActivity implements
         } else {
 
         }
+    }
+
+    private void showMsgNetworkInvaiable() {
+        Toast.makeText(MainActivity.this, getResources().getString(R.string.network_invaliable), Toast.LENGTH_SHORT).show();
     }
 
     private static class MyHandler extends Handler {
@@ -174,10 +185,41 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    /**
-     * 从网络开始加载数据
-     */
-    private void startLoadingData(int pageIndex) {
+    // load from cache
+    private void startLoadingDataFromCache() {
+        log("->startLoadingDataFromCache()");
+        isLoadingData = true;
+        showLoading();
+
+        TaskManager.startTask(new RunnableLoadFromCache(this));
+    }
+
+    // load from cache completed
+    public void endLoadingDataFromCache(final List<ModelStory> list) {
+        log("->endLoadingDataFromCache()");
+        handler.post(new Runnable() { // run in ui-thread
+            @Override
+            public void run() {
+                stopLoading();
+                isLoadingData = false;
+                synchronized (lock4Data) {
+                    data = list;
+                }
+                adapter.setData(data);
+                handler.sendEmptyMessage(MSG_UPDATE_ADAPTER);
+            }
+        });
+    }
+
+    // load from http
+    private void startLoadingDataFromHttp(int pageIndex) {
+        if (NetworkStatReceiver.isNetworkAvailable() == false) {
+            showMsgNetworkInvaiable();
+            stopLoading();
+            isLoadingData = false;
+            return;
+        }
+
         isLoadingData = true;
         showLoading();
 
@@ -215,8 +257,14 @@ public class MainActivity extends BaseActivity implements
                     } else {
                         data = StoryListUtil.merge(data, list);
                     }
-                    adapter.setData(data);
-                    handler.sendEmptyMessage(MSG_UPDATE_ADAPTER);
+                }
+                adapter.setData(data);
+                handler.sendEmptyMessage(MSG_UPDATE_ADAPTER);
+
+                // save to cache
+                if (data != null && data.size() > 0) {
+                    final int maxInfoId = data.get(0).getInfoId();
+                    TaskManager.startTask(new RunnableSaveCache(data,maxInfoId));
                 }
 
                 nextPageIndex++;
@@ -272,7 +320,7 @@ public class MainActivity extends BaseActivity implements
      */
     @Override
     public void onRefresh() {
-        startLoadingData(1);
+        startLoadingDataFromHttp(1);
     }
 
     /**
@@ -314,7 +362,7 @@ public class MainActivity extends BaseActivity implements
             if (firstVisibleItem + visibleItemCount >= totalItemCount) {
                 log("->will loading more...");
                 isLoadingData = true;
-                startLoadingData(nextPageIndex + 1);
+                startLoadingDataFromHttp(nextPageIndex + 1);
             }
         }
     }
