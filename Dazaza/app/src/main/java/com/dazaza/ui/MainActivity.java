@@ -305,14 +305,14 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void stopLoading() {
-        swipeRefreshLayout.post(new Runnable() {
+        swipeRefreshLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (swipeRefreshLayout != null) {
                     swipeRefreshLayout.setRefreshing(false);
                 }
             }
-        });
+        },1000); // means least 1sec loading
     }
 
     /**
@@ -357,6 +357,10 @@ public class MainActivity extends BaseActivity implements
      */
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        if (NetworkStatReceiver.isNetworkAvailable() == false) {
+            return;
+        }
+
         log("1st:" + firstVisibleItem + "/visibleCount:" + visibleItemCount + "/total:" + totalItemCount);
         if (!isLoadingData) {
             if (firstVisibleItem + visibleItemCount >= totalItemCount) {

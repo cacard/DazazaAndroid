@@ -110,7 +110,8 @@ public class StoryActivity extends BaseActivity {
         }
 
         if (webView != null) {
-            webView.loadDataWithBaseURL("file:///android_asset/", HtmlBuilder.buildHtml(modelStory),"text/html", "UTF-8", null);
+            switch2Loading();
+            webView.loadDataWithBaseURL("file:///android_asset/", HtmlBuilder.buildHtml(modelStory), "text/html", "UTF-8", null);
         }
     }
 
@@ -120,6 +121,7 @@ public class StoryActivity extends BaseActivity {
         }
         if (loading != null) {
             loading.setVisibility(View.VISIBLE);
+            loading.start();
         }
     }
 
@@ -128,7 +130,13 @@ public class StoryActivity extends BaseActivity {
             webView.setVisibility(View.VISIBLE);
         }
         if (loading != null) {
-            loading.setVisibility(View.GONE);
+            loading.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    loading.stop();
+                    loading.setVisibility(View.GONE);
+                }
+            }, 600);
         }
     }
 
