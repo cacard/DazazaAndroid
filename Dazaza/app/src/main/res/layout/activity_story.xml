@@ -7,7 +7,8 @@
     <WebView
         android:id="@+id/webView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/menuBottom" />
 
     <com.dazaza.ui.view.MenuBottomView
         android:id="@+id/menuBottom"

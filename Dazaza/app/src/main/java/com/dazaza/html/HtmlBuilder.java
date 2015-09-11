@@ -2,6 +2,7 @@ package com.dazaza.html;
 
 import com.dazaza.model.ModelMoreImage;
 import com.dazaza.model.ModelStory;
+import com.dazaza.utils.DateUtil;
 
 import java.util.List;
 
@@ -40,6 +41,9 @@ public class HtmlBuilder {
         // title
         sb.append("<div class=\"title\">").append(model.getTitle()).append("</div>");
 
+        // date
+        sb.append("<div class=\"story_date\">").append(DateUtil.formatDate(model.getPosttime())).append("</div>");
+
         // image
         sb.append("<div class=\"img_main_box\">")
                 .append("<img src=\"").append(model.getListThumbUrl()).append("\"></img>")
@@ -50,7 +54,7 @@ public class HtmlBuilder {
 
         // more images
         final List<ModelMoreImage> moreImages = model.getMoreImages();
-        if (moreImages != null && moreImages.size() > 0 ) {
+        if (moreImages != null && moreImages.size() > 0) {
             sb.append("<div class=\"more_image\">");
             for (ModelMoreImage moreImage : moreImages) {
                 if (moreImage == null) {
@@ -80,10 +84,10 @@ public class HtmlBuilder {
 
     private static String formatNote(String note) {
         if (note != null && note.length() > 0) {
-            note = note.replace("\n","</p><p>");
+            note = note.replace("\n", "</p><p>");
         }
 
-        return "<p>"+note+"</p>";
+        return "<p>" + note + "</p>";
     }
 
 }

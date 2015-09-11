@@ -4,12 +4,21 @@ body {
 
 .title
 {
-  font-size:22px;
-  padding-top:20px;
-  padding-bottom:20px;
-  padding-left:10px;
-  padding-right:10px;
-  background-color: #DDDDDD;
+  font-size:20px;
+  padding-top:16px;
+  padding-bottom:16px;
+  padding-left:20px;
+  padding-right:20px;
+}
+
+.story_date
+{
+  font-size:14px;
+  padding-left:20px;
+  padding-right:20px;
+  color:#AAAAAA;
+  margin-top:5px;
+  margin-bottom:10px;
 }
 
 .img_main_box
