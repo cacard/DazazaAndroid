@@ -1,7 +1,6 @@
 package com.dazaza.ui.web;
 
 import android.graphics.Bitmap;
-import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -48,8 +47,4 @@ public class StoryWebViewClient extends WebViewClient {
         activity.switch2Webview();
     }
 
-    @Override
-    public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-        super.onReceivedError(view, request, error);
-    }
 }
