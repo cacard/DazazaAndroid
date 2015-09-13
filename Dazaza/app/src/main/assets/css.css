@@ -9,6 +9,7 @@ body {
   padding-bottom:5px;
   padding-left:20px;
   padding-right:20px;
+  font-weight: bolder;
 }
 
 .story_date
@@ -42,6 +43,7 @@ body {
 {
   margin-top:10px;
   margin-bottom:10px;
+  text-align: center;
 }
 
 .more_image_item
@@ -55,4 +57,11 @@ body {
   font-size:15px;
   padding-top:8px;
   padding-bottom:10px;
+}
+
+
+.img_more, .img_main
+{
+  width:94%;
+  height: auto;
 }

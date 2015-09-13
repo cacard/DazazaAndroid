@@ -3,6 +3,8 @@ package com.dazaza.ui;
 import android.app.Activity;
 import android.os.Bundle;
 
+import com.baidu.mobstat.StatService;
+
 /**
  * Created by cunqingli on 2015/8/25.
  */
@@ -29,11 +31,23 @@ public class BaseActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        try {
+            StatService.onResume(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+
+        try {
+            StatService.onPause(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

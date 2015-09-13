@@ -8,7 +8,7 @@
         android:id="@+id/imgBack"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/titlebar_close_margin_right"
-        android:src="@drawable/back_arrow_for_title_bar"
+        android:src="@drawable/ic_arrow_back_black_24dp"
         android:layout_width="@dimen/menu_top_back_arrow_size"
         android:layout_height="@dimen/menu_top_back_arrow_size" />
 

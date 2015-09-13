@@ -12,7 +12,7 @@ import com.dazaza.ui.view.TitleBarView;
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
 
     private TitleBarView titleBar;
-    private static final String TITLE = "设置";
+    private static final String TITLE = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -3,6 +3,7 @@ package com.dazaza.ui.web;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 
@@ -67,6 +68,7 @@ public class StoryActivity extends BaseActivity {
             return;
         }
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webView.setBackgroundColor(0);
         webView.setWebViewClient(new StoryWebViewClient(this));
     }

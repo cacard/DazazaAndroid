@@ -1,7 +1,9 @@
 package com.dazaza.html;
 
-import com.dazaza.model.ModelMoreImage;
+import com.dazaza.model.ModelInfoImage;
 import com.dazaza.model.ModelStory;
+import com.dazaza.system.MyApplication;
+import com.dazaza.utils.ADUtil;
 import com.dazaza.utils.DateUtil;
 
 import java.util.List;
@@ -31,6 +33,7 @@ public class HtmlBuilder {
         sb.append("<meta name=\"format-detection\" content=\"email=no\">");
         sb.append("<title>").append(model.getTitle()).append("</title>");
         sb.append("<link href=\"./css.css\" type=\"text/css\" rel=\"stylesheet\">"); // using loadDataWithBaseUrl("file:///android_asset/"...)
+        sb.append("<script src=\"./js.js\" type=\"text/javascript\" charset=\"utf-8\"></script>");
         sb.append("</head>");
 
         // -------------------
@@ -45,25 +48,30 @@ public class HtmlBuilder {
         sb.append("<div class=\"story_date\">").append(DateUtil.formatDate(model.getPosttime())).append("</div>");
 
         // image
-        sb.append("<div class=\"img_main_box\">")
-                .append("<img src=\"").append(model.getListThumbUrl()).append("\"></img>")
-                .append("</div>");
+        String imgMainUrl = model.getListThumbUrl();
+        if (imgMainUrl != null && imgMainUrl.length() > 0) {
+            imgMainUrl = imgMainUrl.replace("thumb_", "middle_");
+            sb.append("<div class=\"img_main_box\">")
+                    .append("<img class=\"img_main\" " + getJsAttr4ResizeImg() + " src=\"").append(imgMainUrl).append("\"></img>")
+                    .append("</div>");
+        }
+
 
         // note
         sb.append("<div class=\"note\">").append(formatNote(model.getNote())).append("</div>");
 
         // more images
-        final List<ModelMoreImage> moreImages = model.getMoreImages();
+        final List<ModelInfoImage> moreImages = model.getMoreImages();
         if (moreImages != null && moreImages.size() > 0) {
             sb.append("<div class=\"more_image\">");
-            for (ModelMoreImage moreImage : moreImages) {
+            for (ModelInfoImage moreImage : moreImages) {
                 if (moreImage == null) {
                     continue;
                 }
                 sb.append("<div class=\"more_image_item\">");
-                sb.append("<img src=\"").append(moreImage.getImageUrl()).append("\">");
-                if (moreImage.getImageNote() != null && moreImage.getImageNote().length() > 0) {
-                    sb.append("<div class=\"more_image_item_note\">").append(moreImage.getImageNote()).append("</div>");
+                sb.append("<img class=\"img_more\" " + getJsAttr4ResizeImg() + " src=\"").append(moreImage.getImgUrl()).append("\">");
+                if (moreImage.getNote() != null && moreImage.getNote().length() > 0) {
+                    sb.append("<div class=\"more_image_item_note\">").append(moreImage.getNote()).append("</div>");
                 }
                 sb.append("</div>");
             }
@@ -72,10 +80,16 @@ public class HtmlBuilder {
 
         // relate
 
+        //sb.append(ADUtil.getAD());
+
         sb.append("</div>");
         sb.append("</body>");
         // body end
         // -------------------
+
+
+        // app js
+        sb.append("<script src=\"http://img.diglog.com/static/app.js\" type=\"text/javascript\" charset=\"utf-8\"></script>");
 
         sb.append("</html>");
 
@@ -88,6 +102,14 @@ public class HtmlBuilder {
         }
 
         return "<p>" + note + "</p>";
+    }
+
+    private static String getJsAttr4ResizeImg() {
+        final int diff = 40;
+
+        return "onload=\"javascript:DrawImage(this,'"
+                + (MyApplication.screenWidth - diff) + "','"
+                + MyApplication.screenHeight + "');\"";
     }
 
 }

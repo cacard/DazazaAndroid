@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">Dazaza</string>
+    <string name="app_name">奇客发现</string>
+    <string name="app_name_en">diglog</string>
+    <string name="app_slogon">奇客发现 有趣新鲜</string>
+    <string name="splash_domain">www.diglog.com</string>
     <string name="close">关闭</string>
     <string name="back_again_tips">再按一次退出</string>
     <string name="network_invaliable">网络不可用</string>

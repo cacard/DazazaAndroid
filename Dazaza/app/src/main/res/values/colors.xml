@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="body_color">#FFFFFFFF</color>
-    <color name="menu_top_bg">#FFFFFFFF</color>
+    <color name="menu_top_bg">#FFECB22C</color>
     <color name="loading_color_1">#FFFFFF00</color>
     <color name="loading_color_2">#FFFF00FF</color>
     <color name="loading_color_3">#FF00FFFF</color>
 
     <!-- title bar -->
-    <color name="title_bar_bg">#FFDDDDDD</color>
+    <color name="title_bar_bg">#FFECB22C</color>
     <color name="title_bar_title_color">#FF000000</color>
     <color name="title_bar_close_color">#FF000000</color>
+    <color name="logo_border_color">#FFFFFFFF</color>
 
     <!-- grid -->
     <color name="grid_border_color">#FFEEEEEE</color>
     <color name="grid_item_title_color">#FF000000</color>
+    <color name="grid_item_title_bg">#FFFFFFFF</color>
 
     <!-- web bottom bar -->
-    <color name="web_bottom_bar_bg_color">#FFDDDDDD</color>
+    <color name="web_bottom_bar_bg_color">#FFECB22C</color>
 </resources>
