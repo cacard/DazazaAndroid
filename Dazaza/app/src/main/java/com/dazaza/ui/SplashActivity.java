@@ -52,7 +52,7 @@ public class SplashActivity extends BaseActivity {
 
             switch (msg.what) {
                 case MSG_GO_TO_MAIN :
-                    activity.startActivity(new Intent(activity, MainActivity.class));
+                    activity.startActivity(new Intent(activity, MainActivity2.class));
                     break;
             }
         }

@@ -4,8 +4,8 @@ android {
     signingConfigs {
 
     }
-    compileSdkVersion 21
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.0"
     defaultConfig {
         applicationId "com.dazaza"
         minSdkVersion 11
@@ -25,7 +25,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:21.+'
     compile 'com.facebook.fresco:fresco:0.6.1+'
     compile 'de.hdodenhof:circleimageview:1.3.0'
     compile files('libs/gson-2.2.4.jar')
@@ -42,6 +41,10 @@ dependencies {
     // dp,see:http://jakewharton.github.io/butterknife/
     compile 'com.etsy.android.grid:library:1.0.5'
     // 瀑布流 see:https://github.com/etsy/AndroidStaggeredGrid
+
+    // for Design Support Library
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:design:23.0.1'
 }
 
 apply plugin: 'com.neenbedankt.android-apt'
